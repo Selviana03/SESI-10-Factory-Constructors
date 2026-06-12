@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Latihan Factory Pattern - Serlin Selviana Giay</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 20px; background: #f0f2f5; color: #333; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .data-mahasiswa { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', monospace; }
+        .note { background: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Laporan Latihan Factory Pattern</h1>
+        
+        <div class="data-mahasiswa">
+            <p><strong>Nama:</strong> Serlin Selviana Giay</p>
+            <p><strong>NIM:</strong> 251410030</p>
+            <p><strong>Kelas:</strong> SI2A</p>
+        </div>
+
+        <h3>Implementasi Kode Dart</h3>
+        <pre><code>
+// 1. ConnectionFactory (Pooling)
+class ConnectionFactory {
+  static final List<String> _pool = ['Conn-A', 'Conn-B'];
+  static String getConnection() => _pool.removeAt(0);
+  static void releaseConnection(String conn) => _pool.add(conn);
+}
+
+// 2. NotificationFactory (Platform Based)
+abstract class Notification { void send(); }
+class EmailNotification implements Notification { void send() => print("Email"); }
+class PushNotification implements Notification { void send() => print("Push"); }
+class NotificationFactory {
+  static Notification create(String type) => type == 'email' ? EmailNotification() : PushNotification();
+}
+
+// 3. ShapeFactory (Caching)
+class ShapeFactory {
+  static final Map<String, String> _cache = {};
+  static String getShape(String type) {
+    return _cache.putIfAbsent(type, () => "Shape: $type");
+  }
+}
+
+void main() {
+  // Demo implementasi
+  print(ConnectionFactory.getConnection());
+  NotificationFactory.create('email').send();
+  print(ShapeFactory.getShape('Circle'));
+}
+        </code></pre>
+
+        <div class="note">
+            <strong>Instruksi:</strong> Salin kode di atas ke <a href="https://dartpad.dev/" target="_blank">DartPad</a> untuk melihat hasil eksekusi program secara langsung.
+        </div>
+    </div>
+
+</body>
+</html>
